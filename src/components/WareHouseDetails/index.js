@@ -1,63 +1,65 @@
-
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { fetchWarehouses, saveWarehouse,editWarehouse } from "../../actions/warehouseActions";
+import {
+  fetchWarehouses,
+  saveWarehouse,
+  editWarehouse,
+} from "../../actions/warehouseActions";
 import { Link } from "react-router-dom";
 import "./index.css";
 
-
 const WarehouseDetails = () => {
   const { id } = useParams();
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const warehouses = useSelector((state) => state.warehouseReducer.warehouses);
   const warehouse = warehouses.find((wh) => wh.id === parseInt(id));
-  const editedWarehouse = useSelector((state) => state.warehouseReducer.editedWarehouse);
+  const editedWarehouse = useSelector(
+    (state) => state.warehouseReducer.editedWarehouse
+  );
 
   const [editMode, setEditMode] = useState(false);
   const [editedData, setEditedData] = useState({ ...warehouse });
 
-    useEffect(()=>{
-        dispatch(fetchWarehouses())
-        
-    },[dispatch])
+  useEffect(() => {
+    dispatch(fetchWarehouses());
+  }, [dispatch]);
 
-    useEffect(() => {
-      if (editedWarehouse) {
-        setEditedData({ ...editedWarehouse });
-      } else {
-        setEditedData({ ...warehouse });
-      }
-    }, [editedWarehouse, warehouse]);
-
-
-    const handleEditClick = () => {
-      setEditMode(true);
-      dispatch(editWarehouse(warehouse));
-    };
-  
-    const handleCancelClick = () => {
-      setEditMode(false);
-      dispatch(editWarehouse(null));
-    };
-  
-    const handleSaveClick = () => {
-      dispatch(saveWarehouse(editedData));
-      setEditMode(false);
-    };
-  
-    const handleInputChange = (e) => {
-      const { name, value } = e.target;
-      setEditedData({
-        ...editedData,
-        [name]: value,
-      });
-    };
-
-    const handleBack = () =>{
-      navigate("/")
+  useEffect(() => {
+    if (editedWarehouse) {
+      setEditedData({ ...editedWarehouse });
+    } else {
+      setEditedData({ ...warehouse });
     }
+  }, [editedWarehouse, warehouse]);
+
+  const handleEditClick = () => {
+    setEditMode(true);
+    dispatch(editWarehouse(warehouse));
+  };
+
+  const handleCancelClick = () => {
+    setEditMode(false);
+    dispatch(editWarehouse(null));
+  };
+
+  const handleSaveClick = () => {
+    dispatch(saveWarehouse(editedData));
+    setEditMode(false);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditedData({
+      ...editedData,
+      [name]: value,
+    });
+  };
+
+  const handleBack = () => {
+    navigate("/");
+  };
 
   return (
     <div className="details-container">
@@ -120,8 +122,8 @@ const WarehouseDetails = () => {
                 <label htmlFor="liveStatus">Live Status</label>
               </div>
               <div className="button-styling">
-              <button onClick={handleSaveClick}>Save</button>
-              <button onClick={handleCancelClick}>Cancel</button>
+                <button onClick={handleSaveClick}>Save</button>
+                <button onClick={handleCancelClick}>Cancel</button>
               </div>
             </>
           ) : (
@@ -130,7 +132,7 @@ const WarehouseDetails = () => {
               <p>City: {warehouse.city}</p>
               <p>Cluster: {warehouse.cluster}</p>
               <p>Space Available: {warehouse.space_available}</p>
-              <p>Live Status: {warehouse.is_live ? "Live" : "Not Live" }</p>
+              <p>Live Status: {warehouse.is_live ? "Live" : "Not Live"}</p>
               <button onClick={handleEditClick}>Edit</button>
               {/* <Link to='/'><button>Back</button></Link> */}
               <button onClick={handleBack}>Back</button>

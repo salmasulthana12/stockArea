@@ -8,7 +8,6 @@ export const fetchWarehouses = () => {
 
 export const saveWarehouse = (warehouse) => {
     return (dispatch) => {
-        console.log("Edited Warehouse Data:", warehouse);
       dispatch({ type: "SAVE_WAREHOUSE", warehouse });
     };
   };
@@ -27,34 +26,15 @@ export function setSearchQuery(query) {
     };
   }
   
-  export function setFilterOptions(options) {
+  export function setFilterOptions(key, filter) {
     return {
       type: 'SET_FILTER_OPTIONS',
-      options,
+      payload: { key, filter },
     };
   }
 
 
 
-export const setCityFilter = (city) => {
-  return {
-    type: 'SET_CITY_FILTER',
-    city,
-  };
-};
 
-export const setClusterFilter = (cluster) => {
-  return {
-    type: 'SET_CLUSTER_FILTER',
-    cluster,
-  };
-};
-
-export const setSpaceAvailableFilter = (spaceAvailable) => {
-  return {
-    type: 'SET_SPACE_AVAILABLE_FILTER',
-    spaceAvailable,
-  };
-};
 
   

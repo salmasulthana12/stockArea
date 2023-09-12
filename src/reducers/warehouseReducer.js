@@ -6,6 +6,7 @@ const initialState = {
     cluster: "",
     spaceAvailable: 0,
   },
+  currentFilter: "",
 };
 
 const warehouseReducer = (state = initialState, action) => {
@@ -15,7 +16,7 @@ const warehouseReducer = (state = initialState, action) => {
         ...state,
         warehouses: action.payload,
       };
-   
+
     case "SAVE_WAREHOUSE":
       const updatedWarehouses = state.warehouses.map((wh) =>
         wh.id === action.warehouse.id ? action.warehouse : wh
@@ -25,7 +26,7 @@ const warehouseReducer = (state = initialState, action) => {
         ...state,
         warehouses: updatedWarehouses,
       };
-      case 'EDIT_WAREHOUSE':
+    case "EDIT_WAREHOUSE":
       return { ...state, editedWarehouse: action.payload };
     case "SET_SEARCH_QUERY":
       return {
@@ -33,33 +34,13 @@ const warehouseReducer = (state = initialState, action) => {
         searchQuery: action.query,
       };
     case "SET_FILTER_OPTIONS":
+      action.payload.key = action?.payload?.key?.toLowerCase();
+      const data = state.warehouses.filter(
+        (item) => item[action.payload.key] == action.payload.filter
+      );
       return {
         ...state,
-        filterOptions: action.options,
-      };
-    case "SET_CITY_FILTER":
-      return {
-        ...state,
-        filterOptions: {
-          ...state.filterOptions,
-          city: action.city,
-        },
-      };
-    case "SET_CLUSTER_FILTER":
-      return {
-        ...state,
-        filterOptions: {
-          ...state.filterOptions,
-          cluster: action.cluster,
-        },
-      };
-    case "SET_SPACE_AVAILABLE_FILTER":
-      return {
-        ...state,
-        filterOptions: {
-          ...state.filterOptions,
-          spaceAvailable: action.spaceAvailable,
-        },
+        warehouses: data,
       };
     default:
       return state;
